@@ -1,0 +1,13 @@
+{% extends '_docs/template/main.twig' %}
+
+{% block title %}{{ routeName }}{% endblock title %}
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+<a href="subl://open?url=file://{{ appRoot }}/{{ controllerFile }}" class="openFile">Open this file in sublimeText<br /><span class="fileLocationPath">{{ controllerFile }}</span></a>
+<pre class="rawCode">
+{{routeFile}}
+</pre>
+
+{% endblock content %}

@@ -1,0 +1,81 @@
+{% extends '@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/template/main.twig' %}
+
+{% block title %}Routes Analyzer{% endblock title %}
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+
+<h1>Beatrix Route Analyzer <span class="small">{{ httphost }}</span></h1>
+<div class="analyzerMenu">
+    <div class="wrapper">
+        <a class="left" href="/_docs/analyzer">View all</a>
+        <a class="left" href="/_docs/analyzer/onlyRoutesWithExceptions">Only exceptions</a>
+        <a class="right addRoutePath" href="#">+</a>
+    </div>
+</div>
+<div class="controllerEntry">
+    <form id="createNewRoute" name="createNewRoute" method="post" >
+        <input type="text" name="name" placeholder="Name" />
+        <input type="text" name="path" placeholder="Path" />
+        <input type="text" name="controller" placeholder="Controller" />
+        <input type="text" name="attributes" placeholder="Attributes" />
+        <input type="hidden" name="_method" value="PUT">
+    </form>
+</div>
+<script>
+function post_to_url(path, parameters) {
+    var form = $('<form></form>');
+
+    form.attr("method", "post");
+    form.attr("action", path);
+
+    $.each(parameters, function(key, value) {
+        var field = $('<input />');
+
+        field.attr("type", "hidden");
+        field.attr("name", key);
+        field.attr("value", value);
+
+        form.append(field);
+    });
+
+    $(document.body).append(form);
+    form.submit();
+}
+$(document).ready(function() {
+    $('.route .viewController').on('click', function(){
+        $(this).attr('data-route');
+        window.open("/_docs/analyzer/"+$(this).attr('data-route'));
+    });
+    $('.route .createController').on('click', function(){
+        post_to_url('/_docs/analyzer', {'create' : $(this).attr('data-route')});
+    });
+    $('.analyzerMenu .addRoutePath').on('click', function(){
+        // $('#target').submit();
+        $('.controllerEntry').slideToggle();
+    });
+    $('.controllerEntry input').keypress(function (e) {
+        if (e.which == 13) {
+            $('#createNewRoute').submit();
+        }
+    });
+});
+</script>
+
+<div class="routes">
+{% for route in routes %}
+    <div class="route">
+        <div title="Path definition" class="{% if route.fileExist == false %}missing{% elseif route.classExists == false %}error{% else %}exists{% endif %} path">{{ route.path }}{% if route.fileExist == true %}<div title="View controller" data-route="{{route.routeIdentifier}}" class="viewController"></div>{% else %}<div data-route="{{route.routeIdentifier}}" title="Create controller" class="createController"></div>{% endif %}</div>
+        {% if route.fileExist == false %}<div class="information"><div class="text">No controller file exists for this definition.</div></div>{% elseif route.classExists == false %}<div class="information alert"><div class="text">Invalid namespace or class name in controller file.</div></div>{% else %}{% endif %}
+        <div class="controller" title="Controller">controller\{{ route.defaults._controller }}()</div>
+        <a href="subl://open?url=file://{{ webRoot }}/{{ route.controllerPath }}" class="phpFile {% if route.fileExist == true %}exists{% else %}missing{% endif %}" title="Controller file location">{{ route.controllerPath }}</a>
+        <div class="methods" title="Availible methods">{{ route.availibleMethods|raw }}</div>
+    </div>
+{% else %}
+    <div class="noRoutes">Wohoo! No exceptions</div>
+{% endfor %}
+</div>
+
+
+{% endblock content %}

@@ -9,7 +9,7 @@ class Analyzer
     /* Crappy code, will refactor. */
     public function get($app)
     {
-        $data['webRoot'] = WEB_ROOT;
+        $data['appRoot'] = APP_ROOT;
         $data['file']['path'] = 'app/config/routes.yml';
         $routes = $app['cache']->file('beatrixRoutes', $data['file']['path'], 'yml');
         $data['httphost'] = $app['request']->server->get('HTTP_HOST');
@@ -29,7 +29,7 @@ class Analyzer
 
             $data['routeFile'] = file_get_contents($data['controllerFile']);
             $data['routeName'] = $routeToAnalyze;
-            $html = $app['twig']->render('_docs/routes/view.twig', $data);
+            $html = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/routes/view.twig', $data);
             $response = $app->response($html);
             return $response;
         }
@@ -71,7 +71,7 @@ class Analyzer
 
         }
 
-        $html = $app['twig']->render('_docs/routes/analyzer.twig', $data);
+        $html = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/routes/analyzer.twig', $data);
         $response = $app->response( $html );
 
         return $response;
@@ -107,7 +107,7 @@ class Analyzer
 
             $dir = str_replace('\\', '/', $data['namespace']);
 
-            $php = $app['twig']->render('_docs/routes/createController.twig', $data);
+            $php = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/routes/createController.twig', $data);
             if(is_dir('src/controller/'.$dir)){
                 // Moving straight ahead.
             } else {
@@ -152,7 +152,7 @@ class Analyzer
         $data['path'] = str_replace('\\', '/', $data['path']);
         $data['controller'] = str_replace('/', '\\', $data['controller']);
 
-        $insertData = $app['twig']->render('_docs/routes/createRoute.twig', $data);
+        $insertData = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/routes/createRoute.twig', $data);
 
         if(file_put_contents($data['file']['path'], $insertData, FILE_APPEND | LOCK_EX) === false){
             exit('Could not create route. Failed to write file.');
