@@ -1,0 +1,48 @@
+    
+    <h1>['cache']</h1>
+
+    <p class="response">
+        Returns a Beatrix\Cache object.
+    </p>
+
+    <p>The cache object is used to fetch, extract and cache files. (Especially .yml files) You can specify what cache interface to use by setting the "cache.interface" variable in app/config/beatrixCache.php<br />The supported cache interfaces are</p>
+    <ul>
+        <li><a href="http://php.net/manual/en/book.memcached.php">memcached</a></li>
+        <li><a href="https://github.com/krakjoe/apcu">apcu</a></li>
+        <li>none (obviously never use this in production)</li>
+    </ul>
+
+    <h2>Methods</h2>
+    <h3>file($identifier, $file, $format)</h3>
+    <p>Fetches contents of the file and parses it. If the file is already cached, it is fetched from the memory instead.</p>
+
+    <h3>clear($identifier)</h3>
+    <p>Clears the cache. If a identifier is provided, only that item will be cleared.</p>
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+$cache = $app['cache'];
+
+$data = $cache-&gt;file('databaseSettings', 'app/config/db.yml', 'yml');
+print_r($data);
+
+/* Outputs
+Array
+(
+    [weather] => Array
+        (
+            [connectionString] => mysql:host=yr.no;dbname=weatherPredictions
+            [username] => sunny
+            [password] => **********
+            [attributes] => Array
+                (
+                    [ATTR_ERRMODE] => ERRMODE_EXCEPTION
+                    [ATTR_DEFAULT_FETCH_MODE] => FETCH_ASSOC
+                    [ATTR_EMULATE_PREPARES] => 
+                )
+        )
+)
+*/
+    </pre>

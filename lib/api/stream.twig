@@ -1,0 +1,30 @@
+    
+    <h1>stream()</h1>
+    <p class="parameters">
+        <b>$callback</b> <em>callable</em><br />
+        <b>$status</b> <em>int</em> = 200<br />
+        <b>$headers</b> <em>arr</em> = []<br />
+    </p>
+    <p class="response">
+        Returns a symfony response object
+    </p>
+
+
+    <p class="tip">If the streamed response does not work as expected, it is likely because of output buffering.<br />The flush() function does not flush buffering. If ob_start() has been called before or the output_buffering php.ini option is enabled, you must call ob_flush() before flush().<br /><br />
+Additionally, PHP isn't the only layer that can buffer output. Your web server might also buffer based on its configuration. Even more, if you use fastcgi, buffering can't be disabled at all.</p>
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+$response = $app-&gt;stream(function () {
+    echo 'Hello World';
+    flush();
+    sleep(2);
+    echo 'This comes two seconds later...';
+    flush();
+});
+
+return $response;
+
+    </pre>

@@ -1,0 +1,22 @@
+    
+    <h1>json()</h1>
+    <p class="parameters">
+        <b>$data</b> <em>arr</em> = []<br />
+        <b>$status</b> <em>int</em> = 200<br />
+        <b>$headers</b> <em>arr</em> = []<br />
+    </p>
+    <p class="response">
+        Returns a symfony response object
+    </p>
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+$dataArr = ['name' => 'Camilla', 'email' => 'camilla@example.com'];
+
+$response = $app-&gt;json($dataArr);
+
+return $response;
+
+    </pre>

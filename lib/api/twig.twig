@@ -1,0 +1,39 @@
+    
+    <h1>['twig']</h1>
+
+    <p class="response">
+        Returns a configured instance of a <a href="http://twig.sensiolabs.org">twig object</a>.
+    </p>
+
+    <p>Twig files are located by default from src/lib/, if you want to locate files from other folders you can use the @root twig namespace.</p>
+
+    <p>For writing twig templates, please consult the <a href="http://twig.sensiolabs.org/documentation">official documentation</a>.</p>
+
+    <h2>Configuration</h2>
+    <p>The twig object is pre-configured with the following options.</p>
+
+    <h3>In a development environment</h3>
+    <ul>
+        <li><b>auto_reload</b> true</li>
+        <li><b>debug</b> true</li>
+    </ul>
+
+    <h3>In all environments</h3>
+    <ul>
+        <li><b>cache</b> /app/cache/twig</li>
+        <li><b>strict_variables</b> true</li>
+    </ul>
+
+    <h2>Example</h2>
+    <pre>
+&lt;?php
+
+$twig = $app['twig'];
+
+// Will render the file src/lib/examples/welcome.twig
+$html = $twig-&gt;render('examples/welcome.twig');
+
+// You can pass data to the twig template
+$data = ['name' => 'Camilla'];
+$html = $twig-&gt;render('examples/welcome.twig', $data);
+    </pre>

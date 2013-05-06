@@ -1,0 +1,7 @@
+{% extends '@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/template/main.twig' %}
+
+{% block title %}Article{% endblock title %} 
+
+{% block article %} 
+    {% include '@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/article/' ~ article  ~ '.twig'  %}
+{% endblock article %} 

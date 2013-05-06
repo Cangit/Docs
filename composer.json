@@ -1,0 +1,7 @@
+{
+    "name": "cangit/docs",
+    "autoload": {
+        "psr-0": { "Cangit\\Beatrix\\Docs\\": "" }
+    },
+    "target-dir": "Cangit/Beatrix/Docs"
+}

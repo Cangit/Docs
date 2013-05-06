@@ -1,0 +1,18 @@
+# [vendor/cangit] cangit/beatrix/docs/routes.yml
+
+# Beatrix Docs Routes
+_docsTrueHome:
+    path:       /_docs
+    defaults:   { _controller: '@Cangit\Beatrix\Docs\controller\LetsGo' }
+
+_docsArticles:
+    path:       /_docs/article/{article}
+    defaults:   { _controller: '@Cangit\Beatrix\Docs\controller\Article', article: letsGo }
+
+_docsApiResources:
+    path:       /_docs/api/{article}
+    defaults:   { _controller: '@Cangit\Beatrix\Docs\controller\Api', article: index }
+
+_routeAnalyzer:
+    path:       /_docs/analyzer/{route}
+    defaults:   { _controller: '@Cangit\Beatrix\Docs\controller\Analyzer', route: null }

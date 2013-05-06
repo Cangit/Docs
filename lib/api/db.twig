@@ -1,0 +1,103 @@
+    
+    <h1>['db']</h1>
+
+    <p class="response">
+        Returns a instance of Beatrix\DBAL</a>.
+    </p>
+
+    <h2>Configuration</h2>
+    <p>Pre-configuration is done in app/config/db.yml</p>
+    <pre>
+default:
+    connectionString: mysql:host=example.com;dbname=mydbName
+    username: mrstorage
+    password: **********
+    attributes:
+        ATTR_ERRMODE: ERRMODE_EXCEPTION
+        ATTR_DEFAULT_FETCH_MODE: FETCH_ASSOC
+        ATTR_EMULATE_PREPARES: false
+
+weather:
+    connectionString: mysql:host=yr.no;dbname=weatherPredictions
+    username: sunny
+    password: **********
+    attributes:
+        ATTR_ERRMODE: ERRMODE_EXCEPTION
+        ATTR_DEFAULT_FETCH_MODE: FETCH_ASSOC
+        ATTR_EMULATE_PREPARES: false
+    </pre>
+
+    <p>You can define as many db connections as you would like. Just remember to always specify a default connection. (DB connections are of course only instantiated when used.)
+    By default, "PDO::MYSQL_ATTR_INIT_COMMAND: SET NAMES utf8" is run.</p>
+
+    <h2>Methods</h2>
+    <h3>getHandle(optional <em>handle_name</em>)</h3>
+    <p>Creating or fetching a specified <a href="http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html">Doctrine DBAL object.</a></p>
+    <pre>
+$weatherDB = $app['db']-&gt;getHandle('weather');
+</pre>
+
+    <h3>closeHandle(optional <em>handle_name</em>)</h3>
+    <p>Destroying a specified db handle.</p>
+    <pre>
+$app['db']-&gt;closeHandle('weather');
+</pre>
+
+    <h3>setHandle(<em>handle_name</em>)</h3>
+    <p>Sets a handle in a given context.</p>
+    <pre>
+$dbal = $app['db'];
+$dbal-&gt;setHandle('weather');
+$weatherDB = $dbal-&gt;getHandle();
+</pre>
+
+    <h2>Working with Doctrine DBAL objects</h2>
+    <p>Please refer to the <a href="http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/data-retrieval-and-manipulation.html">official documentation</a>. A simplified documentation of the most used methods are found below.</p>
+
+    <h3>Insert</h3>
+    <pre>
+$weatherDB-&gt;insert('user', ['username' =&gt; 'jwage']);
+// INSERT INTO user (username) VALUES (jwage)
+</pre>
+    <h3>Update</h3>
+    <pre>
+$weatherDB-&gt;update('user', ['username' =&gt; 'jwage'], ['id' =&gt; 1]);
+// UPDATE user (username) VALUES ('jwage') WHERE id = 1
+</pre>
+
+    <h3>Delete</h3>
+    <pre>
+$weatherDB-&gt;delete('user', ['id' =&gt; 1]);
+// DELETE FROM user WHERE id = 1
+</pre>
+
+    <h3>Select</h3>
+    <p>Many methods are availible for making select statements, the most used are found below</p>
+    <pre>
+
+// Retrieve only the given column of the first result row.
+$username = $weatherDB-&gt;fetchColumn('SELECT username FROM user WHERE id = ?', [1], 0);
+echo $username; // jwage
+
+
+// Retrieve assoc row of the first result row.
+$user = $weatherDB-&gt;fetchAssoc('SELECT * FROM user WHERE username = ?', ['jwage']);
+/*
+array(
+  'username' =&gt; 'jwage',
+  'password' =&gt; 'changeme'
+)
+*/
+
+
+// Execute the query and fetch all results into an array:
+$users = $weatherDB-&gt;fetchAll('SELECT * FROM user');
+/*
+array(
+  0 =&gt; array(
+    'username' =&gt; 'jwage',
+    'password' =&gt; 'changeme'
+  )
+)
+*/
+</pre>

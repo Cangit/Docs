@@ -1,0 +1,24 @@
+    
+    <h1>['classLoader']</h1>
+
+    <p class="response">
+        Returns an instance of the <a href="http://symfony.com/doc/master/components/class_loader.html#usage">Symfony universal class loader</a>.
+    </p>
+
+    <h2 id="predefinedPaths">Predefined paths</h2>
+    <p>When running Beatrix a few namespaces are already registered, in addition to the namespaces registered by composer. They are outlined in the list below.<br />[<b>namespace</b> path]</p>
+    <ul>
+        <li><b>src</b> src/</li>
+        <li><b>controller</b> src/controller/</li>
+        <li><b>model</b> src/model/</li>
+    </ul>
+
+    <h2>Example</h2>
+    <p>Example of registering a namespace can be found below.</p>
+    <pre>
+&lt;?php
+
+$classLoader = $app['classLoader'];
+$classLoader->registerNamespace( 'namespace' , '/my/path');
+$classLoader->register();
+    </pre>

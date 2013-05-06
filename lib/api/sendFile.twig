@@ -1,0 +1,24 @@
+    
+    <h1>sendFile()</h1>
+    <p class="parameters">
+        <b>$file</b> <em>string</em><br />
+        <b>$status</b> <em>int</em> = 200<br />
+        <b>$headers</b> <em>arr</em> = []<br />
+        <b>$contentDisposition</b> = null<br />
+    </p>
+    <p class="response">
+        Returns a symfony response object
+    </p>
+
+
+    <p class="tip">Send file is awesome! :-)</p>
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+$response = $app-&gt;sendFile('path/to/file.txt');
+
+return $response;
+
+    </pre>

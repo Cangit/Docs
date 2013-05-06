@@ -1,0 +1,122 @@
+
+    <h1>Lets go!</h1>
+    <p>If you see this page, it means that Beatrix is running, and all is good. Congratulations!<br />
+        What follows is the quick and basic 101 to Beatrix. It is time to get going and do some configuration. How you decide to set the configuration is mostly dependent on your environment, are you on prod, test or dev?</p>
+
+    <h2>Configuration</h2>
+    <p>All of the essential configuration files can be found in /app/config/ Lets start to take a look at the first file that will be loaded, the beatrixCache.php</p>
+    <pre>
+&lt;?php
+
+$this-&gt;settings = [
+    'cache.interface' =&gt; 'memcached', 
+    'cache.settings' =&gt; false, 
+    'cache.routes' =&gt; false 
+];
+    </pre>
+    <ul>
+        <li><b>cache.interface</b> <em>memcached, apcu, none</em> Defines what cache interface should be used by the core cache function.</li>
+        <li><b>cache.settings</b> <em>true/false</em> If beatrixSettings.yml should be cached or not.</li>
+        <li><b>cache.routes</b> <em>true/false</em> If routes.yml should be cached. When developing it can be wize to turn this off in exchange for a performance hit.</li>
+    </ul>
+
+    <p>When done, lets move over to the main settings file. beatrixSettings.yml</p>
+    <p class="tip">You will be working with Yaml (.yml) files a lot, so you should use an editor that has syntax highlighting for it. (like <a href="http://sublimetext.com">sublimeText</a>)</p>
+
+    <pre>
+name: MyCoolApp
+timezone: Europe/Oslo
+env: dev
+cache: true
+
+logger:
+    streamHandler:
+        level: 300
+    pushoverHandler:
+        1:
+            token: xxxxxxxxxx
+            user: xxxxxxxxxx
+            title: TitleOnPushNotifications
+            level: 500
+        2:
+            token: xxxxxxxxxx
+            user: xxxxxxxxxx
+            title: TitleOnPushNotifications
+            level: 500
+    </pre>
+    <ul>
+        <li><b>name</b> <em>string</em> The name of the app you are making. This will be attached to debug messages.</li>
+        <li><b>timezone</b> The default timezone in php. Remove the line if you don't want it set at runtime.</li>
+        <li><b>env</b> <em>dev, test, prod</em> Sets the environment. Example: Exceptions thrown will spew out the backtrace on screen when env is dev. Only to logs etc when on prod.</li>
+        <li><b>cache</b> <em>true/false</em> The master switch for most cache functions. When off, the application will take a major performance hit.</li>
+    </ul>
+    <ul>
+        <li><b>logger/streamHandler/level</b> <em>int</em> Sets the error level that must be reached before the error/exception is written to the error logs. You can read more about <a href="https://github.com/Seldaek/monolog#log-levels">the different levels here</a>. The default is 300 (Error)</li>
+        <li><b>logger/pushoverHandler</b> Defines a pushover handler, you can define as many pushover handlers as you would like. The 'level' attribute defines how severe the error must be before the pushoverHandler is triggered. The default is 500 (Critical)</a>. Please read more about pushover and set up an account @ <a href="https://pushover.net/">pushover.net</a></li>
+    </ul>
+
+    <p>Error logs are written to app/log/debug/ make sure the folder is chmodded correctly, so php can read and write to it. There are tons of debug methods availible, but more on that later.</p>
+
+
+    <h2>Routing</h2>
+    <p>Routing is mainly done by Symfonys powerful routing component. Getting started with it is luckily very easy. Lets take a look at the routing file, this will be your friend in the starting process of creating your app, it can be found @ app/config/routes.yml</p>
+    <pre>
+letsgo:
+    path:       /
+    defaults:   { _controller: '_docs\LetsGo' }
+
+docsGetVarExample:
+    path:       /_docs/getVarExample/{name}
+    defaults:   { _controller: '_docs\examples\GetVar', name: sunnyBergen }
+    </pre>
+
+    <p>On the first level is the route name, you can name it whatever you like, but try to keep it informative and consistent. The <b>path</b> indicates the pattern that will match the URL. The <b>defaults</b> values indicate what to do when a path matches the URL. The <b>_controller</b> attribute indicates what controller class to call. There are a lot more to this, but you can create routes with just this knowledge.</p>
+
+    <p>The controllers are resolved by using the path <b>/src/controller/</b> and adding the _controller attribute. So if this had been the routes.yml for www.example.com the URL www.examples.com/ would result in executing <b>/src/controller/_docs/LetsGo.php</b></p>
+
+    <p>Looking at the next routing definition <em>docsGetVarExample</em>, it is a little bit more advanced. What it says is every URL beginning with _docs/getVarExample/ will match. Whatever comes after that last "/" will be passed along to the controller as a variable named 'name'. If nothing is written after the last "/" a default value of 'sunnyBergen' will be written to the 'name' variable and passed to the controller.</p>
+
+    <p class="tip">As mentioned earlier, it can be wize to turn caching of the routes file off while working on it, you can do that with the cache.routes attribute in beatrixCache.php</p>
+
+    <h2>Controllers</h2>
+    <p>Lets take a look at the controller for the page you are looking at now, /src/controller/_docs/LetsGo.php</p>
+    <pre>
+&lt;?php
+
+namespace controller\_docs;
+
+class LetsGo
+{
+
+    public function get($app)
+    {
+        
+        $html = $app['twig']-&gt;render('_docs/letsgo.twig');
+        $response = $app-&gt;response( $html );
+
+        return $response;
+
+        // All the lines above can be written as one line:
+        // return $app-&gt;response( $app['twig']-&gt;render('_docs/letsgo.twig') );
+    }
+
+}
+</pre>
+
+    <p>Beatrix takes the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">http spec</a> seriously and is strict about how it handles http requests. The get method will be executed only if the http request method is GET. If you do a POST against this resource, you will get a "405 Method Not Allowed" response back because the controller does not define a post method. All methods defined in HTTP 1.1 are supported, including: GET, POST, PUT, DELETE …<br />If you request a resource with the OPTION method, you will get a list back with the implemented methods for the resource, this can be very useful during development/debugging</p>
+
+    <p class="tip">I highly recommend using the <a href="https://addons.mozilla.org/en-us/firefox/addon/httprequester/">http requester</a> plugin for firefox when playing-around/debugging.</p>
+
+    <p><b>$app</b> is the application object and is passed along to all methods. (You can ignore this by simply removing the attribute from the methods parameters if you so desire). <b>$app</b> has a ton of uses, but for this example we will just look at whats being used here. First <a href="http://twig.sensiolabs.org/">twig, a template engine</a> is called upon to render a file. Twig files are loaded from src/lib/ , so the file loaded is src/lib/_docs/letsgo.twig<br />The result is captured in the $html variable and passed on to the response method. The response method is in charge of waking up the <a href="http://symfony.com/doc/2.1/components/http_foundation/introduction.html#response">Symfony response object</a> to start create a valid http response. It can accept three parameters. The response body, in this case the $html var. A http status code, default value 200, and additional header values, passed as an array. There are other response methods worth mentioning while we are at it.</p>
+    <ul>
+        <li>response ($body, $status=200, $headers)</li>
+        <li>redirect ($url, $status=302)</li>
+        <li>json ($dataArr, $status=200, $headers)</li>
+        <li>stream ($callback, $status=200, $headers)</li>
+        <li>sendFile ($file, $status=200, $headers, $contentDisposition)</li>
+    </ul>
+    <p>Common for all these methods are that they return a symfony response obj. If you return a symfony response object from a controller method (like this controller method does) it will be prepared (according to pass http1.1 spec requierments) and sent.</p>
+
+    <h2>Thanks</h2>
+    <p>As a final example, you could try to match the second route definition. You can do that using the url <a href="/_docs/getVarExample">/_docs/getVarExample</a>. As you can read from the routing definition, it will take everything after the slash as a variable, so try something like <a href="/_docs/getVarExample/dakipro">/_docs/getVarExample/dakipro</a></p>
+    <p>There is so much more to be desired, but this concludes the speedy introduction. Design patterns, database abstraction, session handling, working with templates and request data, logging, debugging, unit testing and much more is comming up :-)</p>

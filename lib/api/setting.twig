@@ -1,0 +1,26 @@
+    
+    <h1>setting()</h1>
+    <p class="parameters">
+        <b>$var</b> <em>string</em>
+    </p>
+    <p class="response">
+        Returns the value of the setting.
+    </p>
+
+    <p>Settings are fetched from /app/config/beatrixCache.yml and /app/config/beatrixSettings.yml</p>
+    <h2>Exception handling</h2>
+    <p>Throws InvalidArgumentException if argument is not string.</p>
+    <p>Throws Exception if setting is not defined.</p>
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+if ($app->setting('cache') === true){
+    // Do some cache magic
+}
+
+echo "The name of the app is ".$app->setting('name');
+// Outputs: The name of the app is MyCoolApp
+
+    </pre>

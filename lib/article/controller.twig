@@ -1,0 +1,43 @@
+    <h1>Controller</h1>
+    <p>The namespace "controller" is bound to path src/controller/</p>
+
+
+    <h2>Example of usage</h2>
+    <pre>
+&lt;?php
+
+namespace controller\news;
+
+class Article
+{
+
+    public function get($app)
+    {
+        // Fetches the article and displays it
+    }
+
+    public function post($app)
+    {
+        // Updates the article
+    }
+
+    public function put($app)
+    {
+        // Creates a new article
+    }
+
+    public function delete($app)
+    {
+        // Deletes the article
+    }
+
+}
+
+    </pre>
+
+    <h2>Responses</h2>
+    <ul>
+        <li>If the method is not defined, but is a valid HTTP 1.1 method, a <b>405 Method Not Allowed</b> response is generated.</li>
+        <li>If the method is not defined, and is not a valid HTTP 1.1 method, a <b>501 Not Implemented</b> response is generated.</li>
+        <li>Some browsers does not support the full HTTP 1.1 spec. As a fallback, a post variable _method is checked to see what method should be initiated.</li>
+    </ul>

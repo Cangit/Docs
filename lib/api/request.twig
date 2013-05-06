@@ -1,0 +1,35 @@
+    
+    <h1>['request']</h1>
+
+    <p class="response">
+        Returns an instance of the <a href="http://symfony.com/doc/master/components/http_foundation/introduction.html#accessing-request-data">Symfony request object</a>.
+    </p>
+
+
+    <p>
+        Whenever you would interact with $_POST, $_GET, $_SERVER, $_FILE and $_COOKIE you will interact with the symfony request object instead.
+    </p>
+
+
+    <h2>Usage</h2>
+    <ul>
+        <li><b>request</b> equivalent of $_POST</li>
+        <li><b>query</b> equivalent of $_GET</li>
+        <li><b>attributes</b> internal parameterbag, containes varibales set by routes.yml</li>
+        <li><b>cookies</b> equivalent of $_COOKIE</li>
+        <li><b>files</b> equivalent of $_FILE</li>
+        <li><b>server</b> equivalent of $_SERVER</li>
+        <li><b>headers</b> equivalent to a subset of $_SERVER</li>
+    </ul>
+
+    <h2>Example</h2>
+    <pre>
+&lt;?php
+
+$request = $app['request'];
+
+// Fetching values from a post form
+$data['mail'] = $request-&gt;request-&gt;get('mail', 'post@example.com');
+$data['content'] = $request-&gt;request-&gt;get('content', 'No message has been written.');
+
+    </pre>

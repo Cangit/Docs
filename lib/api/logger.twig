@@ -1,0 +1,64 @@
+    
+    <h1>['logger']</h1>
+
+    <p class="response">
+        Returns a configured instance of <a href="https://github.com/Seldaek/monolog">Monolog</a>.
+    </p>
+
+    <p>
+        The logger instance can be used for all your logging needs.
+    </p>
+
+    <h2>Configuration</h2>
+    <p>Pre-configuration of the logger object can be done in app/config/beatrixSettings.yml</p>
+    <pre>
+logger:
+    streamHandler:
+        level: 300
+    pushoverHandler:
+        1:
+            token: xxxxxxxxxx
+            user: xxxxxxxxxx
+            title: notificationTitle
+            level: 500
+    </pre>
+    <h3>Stream Handler</h3>
+    <p>The stream handler is writing debug files to app/log/debug/. The 'level' attribute indicates the log level that must be reached before it starts writing to the debug file. 300 (WARNING) is the default.</p>
+
+    <h3>Pushover Handler</h3>
+    <p>The pushover handler is only activated in a production or test environment (not in dev). It triggers push notification when a event with significance higher than 'level' is logged. <a href="http://pushover.net">Read more about pushover.</a></p>
+
+    <h3>Dev Handlers</h3>
+    <p>In a development environment the ChromePHPHandler and FirePHPHandler is activated by default. They write to the  <a href="https://chrome.google.com/webstore/detail/chrome-logger/noaneddfkdjfnfdakjjmocngnfkfehhd">Chrome Logger (Chrome plugin)</a> and FirePHP (FireFox extension) respectively. At the moment FirePHP is only availible through the <a href="http://developercompanion.com/">developer companion extension</a>. When you install these plugins/extensions, all logging information will be availible through the browsers console.</p>
+
+    <p>Developing without these extensions are <b>slowing you down</b>. Install them now :-)</p>
+
+    <h2>Usage</h2>
+    <p><a href="http://tools.ietf.org/html/rfc5424">RFC 5424</a> compatible.</p>
+    <ul>
+        <li><b>100</b> DEBUG <em>Detailed debug information.</em></li>
+        <li><b>200</b> INFO <em> Interesting events. SQL logs etc</em></li>
+        <li><b>250</b> NOTICE <em>Normal, but significant events.</em></li>
+        <li><b>300</b> WARNING <em>Exceptional occurrences that are not errors. Examples: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.</em></li>
+        <li><b>400</b> ERROR <em>Runtime errors that do not require immediate action but should typically be logged and monitored.</em></li>
+        <li><b>500</b> CRITICAL <em>Critical conditions. Example: Application component unavailable, unexpected exception.</em></li>
+        <li><b>550</b> ALERT <em>Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.</em></li>
+        <li><b>600</b> EMERGENCY <em>Emergency: system is unusable. Not really used, as triggering it from php is likely not working when this should be used.</em></li>
+    </ul>
+    <p>All the above logging levels are availible.</p>
+    
+    <h2>Example</h2>
+    <pre>
+&lt;?php
+
+$logger = $app['logger'];
+
+$debugData = [ 'name' => 'Camilla', 'mail' => 'camilla@example.com'];
+
+// Logging a debug message
+$logger-&gt;debug('A string message', $debugData);
+
+// Logging a warning
+$logger-&gt;warning('A string message', $debugData);
+
+    </pre>

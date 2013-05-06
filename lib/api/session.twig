@@ -1,0 +1,37 @@
+    
+    <h1>['session']</h1>
+
+    <p class="response">
+        Returns a configured instance of a <a href="http://api.symfony.com/master/Symfony/Component/HttpFoundation/Session/Session.html">symfony session object</a>.
+    </p>
+
+    <p class="tip">
+        ['session'] replaces the native session functions found in php. For gains in security, a clean OO-interface and extended functionality. Do not use the native session functions, such as interacting with $_SESSION and functions such as session_start().
+    </p>
+
+    <p>Resource: <a href="http://symfony.com/doc/master/components/http_foundation/sessions.html#session-api">Official Session Api</a></p>
+
+
+    <h2>Usage</h2>
+    <pre>
+&lt;?php
+
+$session = $app['session'];
+
+// The "/" character works as a namespace delimiter
+$session-&gt;set('user/name', 'Camilla');
+$session-&gt;set('user/email', 'camilla@example.com');
+
+/* ... */
+
+echo $session-&gt;get('user/name', 'Mr NoName');
+echo $session-&gt;get('user/email');
+echo $session-&gt;get('user/photo', 'noPhoto.jpg');
+
+/* Outputs
+Camilla
+camilla@example.com
+noPhoto.jpg
+*/
+
+    </pre>
