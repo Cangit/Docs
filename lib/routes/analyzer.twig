@@ -69,7 +69,7 @@ $(document).ready(function() {
         <div title="Path definition" class="{% if route.fileExist == false %}missing{% elseif route.classExists == false %}error{% else %}exists{% endif %} path">{{ route.path }}{% if route.fileExist == true %}<div title="View controller" data-route="{{route.routeIdentifier}}" class="viewController"></div>{% else %}<div data-route="{{route.routeIdentifier}}" title="Create controller" class="createController"></div>{% endif %}</div>
         {% if route.fileExist == false %}<div class="information"><div class="text">No controller file exists for this definition.</div></div>{% elseif route.classExists == false %}<div class="information alert"><div class="text">Invalid namespace or class name in controller file.</div></div>{% else %}{% endif %}
         <div class="controller" title="Controller">controller\{{ route.defaults._controller }}()</div>
-        <a href="subl://open?url=file://{{ webRoot }}/{{ route.controllerPath }}" class="phpFile {% if route.fileExist == true %}exists{% else %}missing{% endif %}" title="Controller file location">{{ route.controllerPath }}</a>
+        <a href="subl://open?url=file://{{ appRoot }}/{{ route.controllerPath }}" class="phpFile {% if route.fileExist == true %}exists{% else %}missing{% endif %}" title="Controller file location">{{ route.controllerPath }}</a>
         <div class="methods" title="Availible methods">{{ route.availibleMethods|raw }}</div>
     </div>
 {% else %}
