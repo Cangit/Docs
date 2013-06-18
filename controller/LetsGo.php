@@ -9,7 +9,7 @@ class LetsGo
     public function get($app)
     {
         
-        $html = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/docs/lib/letsgo.twig');
+        $html = $app['twig']->render('@root/vendor/cangit/docs/Cangit/Beatrix/Docs/lib/letsgo.twig');
         $response = $app->response( $html );
 
         return $response;
